@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -26,24 +27,33 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData(1, "Pilot", "02-09-2013", "See"),
-  createData(1, "Pilot", "02-09-2013", "See"),
-  createData(1, "Pilot", "02-09-2013", "See"),
-  createData(1, "Pilot", "02-09-2013", "See"),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
 });
 
-export default function List() {
+export default function EpisodesTable() {
+  const [episodes, setEpisodes] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await Axios({
+          url: "https://rickandmortyapi.com/api/episode",
+          url2: "https://rickandmortyapi.com/api/episode?page=2",
+        });
+
+        setEpisodes(response.data.results);
+        console.log(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [setEpisodes]);
+
   const classes = useStyles();
 
   return (
@@ -58,13 +68,13 @@ export default function List() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {episodes.map((episode) => (
+            <StyledTableRow key={episode.id}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {episode.id}
               </StyledTableCell>
-              <StyledTableCell>{row.calories}</StyledTableCell>
-              <StyledTableCell>{row.fat}</StyledTableCell>
+              <StyledTableCell>{episode.name}</StyledTableCell>
+              <StyledTableCell>{episode.air_date}</StyledTableCell>
               <StyledTableCell>
                 <button>See all</button>
               </StyledTableCell>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import List from "./components/List";
+import EpisodesTable from "./components/EpisodesTable";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       </HeaderContainer>
       <ContentContainer>
         <Title>In this list you can view each of the episodes</Title>
-        <List />
+        <EpisodesTable />
       </ContentContainer>
     </AppContainer>
   );
@@ -25,10 +25,11 @@ const AppContainer = styled.div`
   background-color: #8aa29e;
   display: flex;
   flex-direction: column;
+  position: static;
 `;
 
 const HeaderContainer = styled.div`
-  height: 15vh;
+  height: 150px;
   background-color: #3d5467;
   display: flex;
   flex-direction: column;
@@ -46,7 +47,7 @@ const TitleSpan = styled.span`
 `;
 
 const ContentContainer = styled.div`
-  height: 100vh;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
