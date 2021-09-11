@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import List from "./components/List";
 
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
         </Title>
         <Title>Go for it !</Title>
       </HeaderContainer>
+      <ContentContainer>
+        <Title>In this list you can view each of the episodes</Title>
+        <List />
+      </ContentContainer>
     </AppContainer>
   );
 }
@@ -38,6 +43,13 @@ const Title = styled.h1`
 
 const TitleSpan = styled.span`
   color: #db5461;
+`;
+
+const ContentContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default App;
