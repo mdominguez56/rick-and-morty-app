@@ -8,7 +8,22 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -28,14 +43,43 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
   },
-});
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
 
 export default function EpisodesTable() {
+  const classes = useStyles();
   const [episodes, setEpisodes] = useState([]);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Text in a modal</h2>
+      <p id="simple-modal-description">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      </p>
+      <Modal />
+    </div>
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +96,6 @@ export default function EpisodesTable() {
 
     fetchData();
   }, [setEpisodes]);
-
-  const classes = useStyles();
 
   return (
     <TableContainer component={Paper}>
@@ -75,9 +117,18 @@ export default function EpisodesTable() {
               <StyledTableCell>{episode.name}</StyledTableCell>
               <StyledTableCell>{episode.air_date}</StyledTableCell>
               <StyledTableCell>
-                <Button variant="contained" color="primary">
-                  See all
-                </Button>
+                <button type="button" onClick={handleOpen}>
+                  Open Modal
+                </button>
+                <Modal
+                  open={open}
+                  onClick={handleOpen}
+                  onClose={handleClose}
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="simple-modal-description"
+                >
+                  {body}
+                </Modal>
               </StyledTableCell>
             </StyledTableRow>
           ))}
