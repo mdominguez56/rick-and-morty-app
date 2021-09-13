@@ -9,6 +9,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Modal from "@material-ui/core/Modal";
+import CharacterList from "../CharacterList";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -73,11 +79,7 @@ export default function EpisodesTable() {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-      <Modal />
+      <CharacterList episodes={episodes} />
     </div>
   );
 
@@ -120,6 +122,15 @@ export default function EpisodesTable() {
                 <button type="button" onClick={handleOpen}>
                   Open Modal
                 </button>
+                <button
+                  onClick={() =>
+                    episode.characters.map((character) =>
+                      console.log(character)
+                    )
+                  }
+                >
+                  Test
+                </button>
                 <Modal
                   open={open}
                   onClick={handleOpen}
@@ -127,7 +138,29 @@ export default function EpisodesTable() {
                   aria-labelledby="simple-modal-title"
                   aria-describedby="simple-modal-description"
                 >
-                  {body}
+                  {
+                    <div style={modalStyle} className={classes.paper}>
+                      <List dense className={classes.root}>
+                        {[0, 1, 2, 3].map((value) => {
+                          const labelId = `checkbox-list-secondary-label-${value}`;
+                          return (
+                            <ListItem key={value} button>
+                              <ListItemAvatar>
+                                <Avatar
+                                  alt={`Avatar n°${value + 1}`}
+                                  src={`/static/images/avatar/${value + 1}.jpg`}
+                                />
+                              </ListItemAvatar>
+                              <ListItemText
+                                id={labelId}
+                                primary={`Line item ${value + 1}`}
+                              />
+                            </ListItem>
+                          );
+                        })}
+                      </List>
+                    </div>
+                  }
                 </Modal>
               </StyledTableCell>
             </StyledTableRow>
